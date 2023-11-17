@@ -2,8 +2,11 @@ import { Request, Response } from "express";
 import asyncHandler from "../middleware/asynHandler.js";
 import { pool } from "../db/index.js";
 import bcrypt from "bcryptjs";
-import { sign } from "jsonwebtoken";
+import pkg from "jsonwebtoken";
+import config from "../constants/index.js";
 
+const { sign } = pkg;
+const { SECRET } = config;
 const { hash } = bcrypt;
 
 interface User {
@@ -55,9 +58,12 @@ const login = asyncHandler(async (req: Request, res: Response) => {
     email: user?.email,
   };
 
-  if (user) {
-    res.status(201).json({
-      payload,
+  const token = await sign(payload, SECRET);
+
+  if (token) {
+    res.status(201).cookie("token", token, { httpOnly: true }).json({
+      success: true,
+      message: "Logged in successfully",
     });
   } else {
     res.status(500);
@@ -65,4 +71,10 @@ const login = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export { getUsers, register, login };
+const logout = asyncHandler(async (req: Request, res: Response) => {
+  res.status(201).clearCookie("token", { httpOnly: true }).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+});
+export { getUsers, register, login, logout };

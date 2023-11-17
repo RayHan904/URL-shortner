@@ -1,6 +1,10 @@
 import asyncHandler from "../middleware/asynHandler.js";
 import { pool } from "../db/index.js";
 import bcrypt from "bcryptjs";
+import pkg from "jsonwebtoken";
+import config from "../constants/index.js";
+const { sign } = pkg;
+const { SECRET } = config;
 const { hash } = bcrypt;
 const getUsers = asyncHandler(async (req, res) => {
     const { rows, rowCount } = await pool.query("SELECT * FROM users");
@@ -37,9 +41,11 @@ const login = asyncHandler(async (req, res) => {
         id: user?.user_id,
         email: user?.email,
     };
-    if (user) {
-        res.status(201).json({
-            payload,
+    const token = await sign(payload, SECRET);
+    if (token) {
+        res.status(201).cookie("token", token, { httpOnly: true }).json({
+            success: true,
+            message: "Logged in successfully",
         });
     }
     else {
@@ -47,5 +53,11 @@ const login = asyncHandler(async (req, res) => {
         throw new Error("Failed to login!");
     }
 });
-export { getUsers, register, login };
+const logout = asyncHandler(async (req, res) => {
+    res.status(201).clearCookie("token", { httpOnly: true }).json({
+        success: true,
+        message: "Logged out successfully",
+    });
+});
+export { getUsers, register, login, logout };
 //# sourceMappingURL=authController.js.map

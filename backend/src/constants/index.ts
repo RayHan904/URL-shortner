@@ -6,7 +6,7 @@ const constants = {
   PORT: process.env.PORT || 8000,
   SERVER_URL: process.env.SERVER_URL,
   CLIENT_URL: process.env.CLIENT_URL,
-  SECRET: process.env.SECRET,
+  SECRET: process.env.SECRET || "myTakeHome",
   DB_USER: process.env.DB_USER || "postgres",
   DB_PASSWORD: process.env.DB_PASSWORD || "",
   DB_HOST: process.env.DB_HOST || "localhost",
