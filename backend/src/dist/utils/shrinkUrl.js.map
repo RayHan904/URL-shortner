@@ -1,0 +1,1 @@
+{"version":3,"file":"shrinkUrl.js","sourceRoot":"","sources":["../../utils/shrinkUrl.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,QAAQ,CAAC;AAExC,MAAM,QAAQ,GACZ,gEAAgE,CAAC;AACnE,MAAM,SAAS,GAAG,cAAc,CAAC,QAAQ,EAAE,CAAC,CAAC,CAAC;AAE9C,eAAe,SAAS,CAAC"}

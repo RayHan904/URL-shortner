@@ -16,3 +16,15 @@ CREATE TABLE urls (
     user_id INT REFERENCES users(user_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Table to store shortened URL's analytics
+CREATE TABLE analytics (
+    analytics_id SERIAL PRIMARY KEY,
+    url_id INT REFERENCES urls(url_id),
+    request_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    device_type VARCHAR(50),
+    os_type VARCHAR(50),
+    country VARCHAR(100),
+    city VARCHAR(100),
+    browser_type VARCHAR(50)
+);
