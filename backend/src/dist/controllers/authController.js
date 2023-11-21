@@ -12,30 +12,30 @@ const getUsers = asyncHandler(async (req, res) => {
         res.status(201).json({
             success: true,
             users: rows,
-            message: "Successfully fetched users!",
+            message: "Users retrieved successfully",
         });
     }
     else {
-        res.status(500);
-        throw new Error("Failed to get users!");
+        res.status(204).json({
+            success: true,
+            users: [],
+            message: "No Users found in the Database",
+        });
     }
 });
 const deleteUser = asyncHandler(async (req, res) => {
     const userId = req.params.userId;
-    // Perform the delete operation
     const result = await pool.query(`DELETE FROM ${USERS_TABLE} WHERE user_id = $1`, [userId]);
     const { rowCount } = result;
     if (rowCount >= 1) {
         res.status(200).json({
             success: true,
-            message: "User deleted successfully!",
+            message: "User deleted successfully.",
         });
     }
     else {
-        res.status(404).json({
-            success: false,
-            message: "User not found or failed to delete.",
-        });
+        res.status(404);
+        throw new Error();
     }
 });
 const register = asyncHandler(async (req, res) => {
@@ -51,12 +51,12 @@ const register = asyncHandler(async (req, res) => {
     if (rowCount === 1) {
         res.status(201).json({
             success: true,
-            message: "The registration was successful!",
+            message: "User registered successfully",
         });
     }
     else {
         res.status(500);
-        throw new Error("Failed to register!");
+        throw new Error();
     }
 });
 const login = asyncHandler(async (req, res) => {
@@ -74,7 +74,7 @@ const login = asyncHandler(async (req, res) => {
     }
     else {
         res.status(500);
-        throw new Error("Failed to login!");
+        throw new Error();
     }
 });
 const logout = asyncHandler(async (req, res) => {

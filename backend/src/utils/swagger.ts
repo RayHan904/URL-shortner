@@ -6,19 +6,28 @@ const options = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "URL shortner API",
+      title: "URL Shortener API",
       version: "1.0.0",
       description: "API to shorten a URL",
     },
+    components: {
+      securitySchemes: {
+        cookieAuth: {
+          type: "apiKey",
+          in: "cookie",
+          name: "token",
+        },
+      },
+    },
+    security: [{ cookieAuth: [] }],
     servers: [
       {
         url: "http://localhost:8000",
       },
     ],
   },
-  apis: ["../routes/*.js"],
+  apis: ["./src/dist/routes/*.js", "./src/dist/server.js"],
 };
-
 const swaggerSpecs = swaggerJsdoc(options);
 
 export const swaggerDocs = (app: Express, port: number) => {

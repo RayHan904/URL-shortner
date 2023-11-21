@@ -17,18 +17,20 @@ passport.use(new Strategy(opts, async ({ id }, done) => {
     try {
         const { rows } = await pool.query("SELECT user_id, email, is_admin FROM users WHERE user_id = $1", [id]);
         if (!rows.length) {
-            throw new Error("401 not authorized");
+            // If user is not found, send an "Unauthorized" error
+            return done(null, false, { message: "Unauthosdfsrized" });
         }
         let user = {
             user_id: rows[0].user_id,
             email: rows[0].email,
             is_admin: rows[0].is_admin,
         };
+        // If user is found, return the user object
         return done(null, user);
     }
     catch (error) {
-        console.log(error.message);
-        done(null, false);
+        // If an unexpected error occurs, return a 500 status
+        return done(null, false, { message: "Internal sdfsServer Error" });
     }
 }));
 //# sourceMappingURL=passport-middleware.js.map

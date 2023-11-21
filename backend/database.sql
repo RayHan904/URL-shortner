@@ -15,6 +15,7 @@ CREATE TABLE urls (
     short_url_key VARCHAR(10) UNIQUE NOT NULL,
     user_id INT REFERENCES users(user_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    clicks INT DEFAULT 0
 );
 
 -- Table to store shortened URL's analytics
