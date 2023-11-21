@@ -59,10 +59,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
   const existingUsers = await pool.query(`SELECT COUNT(*) FROM ${USERS_TABLE}`);
 
   // Determine if the user being registered is the first user
-  const isFirstUser = existingUsers.rows[0].count === 0;
-
-  // Set is_admin field based on whether the user is the first user
-  const isAdmin = isFirstUser ? true : false;
+  const isAdmin = existingUsers.rows[0].count === 0;
 
   const { rowCount } = await pool.query(
     `INSERT INTO ${USERS_TABLE}(email, password_hash, is_admin) VALUES ($1, $2, $3)`,
@@ -96,7 +93,7 @@ const login = asyncHandler(async (req: any, res: any) => {
     });
   } else {
     res.status(500);
-    throw new Error();
+    throw new Error("Failed to login.");
   }
 });
 

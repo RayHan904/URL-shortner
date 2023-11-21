@@ -2,8 +2,8 @@ import { config } from "dotenv";
 config();
 const constants = {
     PORT: parseInt(process.env.PORT) || 8000,
-    SERVER_URL: process.env.SERVER_URL,
-    CLIENT_URL: process.env.CLIENT_URL,
+    SERVER_URL: process.env.SERVER_URL || "http://localhost:8000",
+    CLIENT_URL: process.env.CLIENT_URL || "",
     NODE_ENV: process.env.NODE_ENV,
     URL: process.env.NODE_ENV === "production"
         ? process.env.CLIENT_URL

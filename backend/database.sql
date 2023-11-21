@@ -14,7 +14,7 @@ CREATE TABLE urls (
     original_url TEXT NOT NULL,
     short_url_key VARCHAR(10) UNIQUE NOT NULL,
     user_id INT REFERENCES users(user_id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     clicks INT DEFAULT 0
 );
 

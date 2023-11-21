@@ -1,5 +1,4 @@
 import express from "express";
-import config from "./constants/index.js";
 import authRoutes from "./routes/auth.js";
 import analyticRoutes from "./routes/analytics.js";
 import urlRoutes from "./routes/urls.js";
@@ -11,6 +10,9 @@ import useragent from "express-useragent";
 import expressip from "express-ip";
 import "./middleware/passport-middleware.js";
 import { swaggerDocs } from "./utils/swagger.js";
+import { config } from "dotenv";
+config();
+const PORT = process.env.PORT || 8000;
 const app = express();
 app.use(useragent.express());
 app.use(expressip().getIpInfoMiddleware);
@@ -160,7 +162,7 @@ app.use("/api/analytics", analyticRoutes);
 app.use("/api/url", urlRoutes);
 app.use(notFound);
 app.use(errorHandler);
-app.listen(config.PORT, () => {
-    console.log(`The server is listening at PORT : ${config.PORT}`);
+app.listen(PORT, () => {
+    console.log(`The server is listening at PORT : ${PORT}`);
 });
 //# sourceMappingURL=server.js.map
