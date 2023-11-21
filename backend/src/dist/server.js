@@ -11,7 +11,7 @@ import useragent from "express-useragent";
 import expressip from "express-ip";
 import "./middleware/passport-middleware.js";
 import { swaggerDocs } from "./utils/swagger.js";
-const app = express(); // Middleware to extract user agent information
+const app = express();
 app.use(useragent.express());
 app.use(expressip().getIpInfoMiddleware);
 app.use(cors({ origin: "*", credentials: true }));

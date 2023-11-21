@@ -1,29 +1,4 @@
-import express from "express";
-import config from "./constants/index.js";
-import authRoutes from "./routes/auth.js";
-import analyticRoutes from "./routes/analytics.js";
-import urlRoutes from "./routes/urls.js";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-import cookieParser from "cookie-parser";
-import passport from "passport";
-import cors from "cors";
-import useragent from "express-useragent";
-import expressip from "express-ip";
-
-import "./middleware/passport-middleware.js";
-import { swaggerDocs } from "./utils/swagger.js";
-
-const app = express();
-app.use(useragent.express());
-app.use(expressip().getIpInfoMiddleware);
-
-app.use(cors({ origin: "*", credentials: true }));
-app.use(express.json());
-app.use(cookieParser());
-app.use(passport.initialize());
-
-swaggerDocs(app, 8000);
-
+export {};
 /**
  * @swagger
  *  components:
@@ -56,7 +31,7 @@ swaggerDocs(app, 8000);
  *           example:
  *             success: false
  *             message: Resource not found.
- *            
+ *
  
  *
  *
@@ -160,13 +135,4 @@ swaggerDocs(app, 8000);
  *           example: 'Chrome'
  *           description: Type of browser used for the request.
  */
-
-app.use("/api/users", authRoutes);
-app.use("/api/analytics", analyticRoutes);
-app.use("/api/url", urlRoutes);
-app.use(notFound);
-app.use(errorHandler);
-
-app.listen(config.PORT, () => {
-  console.log(`The server is listening at PORT : ${config.PORT}`);
-});
+//# sourceMappingURL=swaggerSchema.js.map

@@ -9,8 +9,18 @@ const getAllLinks = asyncHandler(async (req: any, res: any) => {
   const { rows, rowCount } = await pool.query(
     `SELECT * FROM ${URLS_TABLE} ORDER BY created_at DESC;`,
   );
-  if (!(rowCount > 0)) return res.json({ status: "failed" });
-  res.json(rows);
+  if (!(rowCount > 0)) {
+    res.status(204).json({
+      success: true,
+      message: "No Urls found in the Database",
+      urlData: {},
+    });
+  }
+  res.status(200).json({
+    success: true,
+    message: "URLs retrieved successfully",
+    urlData: rows,
+  });
 });
 
 // Get links associated to a userId
@@ -23,12 +33,17 @@ const getLink = asyncHandler(async (req: any, res: any) => {
   );
 
   if (!(rowCount > 0)) {
-    return res.status(404).json({
-      status: "failed",
-      message: "No links found for the specified user ID.",
+    res.status(204).json({
+      success: true,
+      message: "No Urls found in the Database",
+      urlData: {},
     });
   }
-  res.json(rows);
+  res.status(200).json({
+    success: true,
+    message: "URLs retrieved successfully",
+    urlData: rows,
+  });
 });
 
 // Get links associated to a userId
@@ -46,7 +61,11 @@ const getUserLinks = asyncHandler(async (req: any, res: any) => {
       message: "No links found for the specified user ID.",
     });
   }
-  res.json(rows);
+  res.status(200).json({
+    success: true,
+    message: "URLs retrieved successfully",
+    urlData: rows,
+  });
 });
 
 // shrink url
@@ -59,7 +78,10 @@ const shrink = asyncHandler(async (req: any, res: any) => {
     `INSERT INTO ${URLS_TABLE}(short_url_key, original_url, user_id) VALUES ($1, $2, $3);`,
     [short_url_key, original_url, user_id],
   );
-  res.json({
+
+  res.status(200).json({
+    success: true,
+    message: "URLs retrieved successfully",
     url: `${URL}/${short_url_key}`,
   });
 });
@@ -73,7 +95,7 @@ const redirect = asyncHandler(async (req: any, res: any) => {
     ? "Mobile"
     : req.useragent.isDesktop
     ? "Desktop"
-    : null;
+    : "unknown";
   const osType = req.useragent.os || "unknown";
   const country = ipInfoResponse.country || "unknown";
   const city = ipInfoResponse.city || "unknown";
@@ -87,38 +109,40 @@ const redirect = asyncHandler(async (req: any, res: any) => {
   console.log("Browser Type:", browserType);
   console.log("ip:", ip);
 
-  // console.log("JSON RES", ipInfoResponse);
-
   const { rows, rowCount } = await pool.query(
-    `  UPDATE ${URLS_TABLE}
+    `UPDATE ${URLS_TABLE}
     SET clicks = clicks + 1
     WHERE short_url_key = $1
-    RETURNING url_id, original_url, clicks;`,
+    RETURNING url_id, user_id, original_url, clicks;`,
     [shortUrl],
   );
 
-  if (!(rowCount > 0)) {
-    res.redirect("/");
+  if (rowCount > 0) {
+    const { url_id, user_id, original_url } = rows[0];
+
+    console.log("USER ID", user_id);
+
+    await pool.query(
+      `
+      INSERT INTO analytics (
+        user_id,
+        url_id,
+        device_type,
+        os_type,
+        country,
+        city,
+        browser_type
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7);
+      `,
+      [user_id, url_id, deviceType, osType, country, city, browserType],
+    );
+
+    // Redirect to the original URL
+    res.redirect(original_url);
+  } else {
+    res.status(400);
+    throw new Error("No such URL found.");
   }
-
-  const { url_id, original_url } = rows[0];
-
-  await pool.query(
-    `
-  INSERT INTO analytics (
-    url_id,
-    device_type,
-    os_type,
-    country,
-    city,
-    browser_type
-  ) VALUES ($1, $2, $3, $4, $5, $6);
-  `,
-    [url_id, deviceType, osType, country, city, browserType],
-  );
-
-  // Redirect to the original URL
-  res.redirect(original_url);
 });
 
 const deleteLink = asyncHandler(async (req: any, res: any) => {

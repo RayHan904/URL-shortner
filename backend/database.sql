@@ -22,6 +22,7 @@ CREATE TABLE urls (
 CREATE TABLE analytics (
     analytics_id SERIAL PRIMARY KEY,
     url_id INT REFERENCES urls(url_id),
+    user_id INT REFERENCES users(user_id),
     request_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     device_type VARCHAR(50),
     os_type VARCHAR(50),
@@ -29,3 +30,5 @@ CREATE TABLE analytics (
     city VARCHAR(100),
     browser_type VARCHAR(50)
 );
+
+
