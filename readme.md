@@ -19,12 +19,12 @@ This is a URL shortener API developed using PostgreSQL, Node.js, and Express.js.
 
 ## Getting Started
 
-### Prerequisites
+## Prerequisites
 
 - Node.js installed
 - PostgreSQL database
 
-### Installation
+## Installation
 
 - Clone the repository:
 
@@ -38,14 +38,14 @@ This is a URL shortener API developed using PostgreSQL, Node.js, and Express.js.
   npm install
   ```
 
-````
+
 - Run Server:
 
 ```bash
 npm run dev
-````
+```
 
-### API Endpoints
+## API Endpoints
 
 For API documentation, visit OpenAPI docs : https://url-shortner-api-7cp2.onrender.com/api-docs
 
@@ -53,11 +53,11 @@ token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJyZWhhbjk5QGd
 
 (Note: you might have to use the bearer token provided for authorization)
 
-### Configuration
+## Configuration
 
 Database: Configure your PostgreSQL database in the .env file.
 Port: By default, the server runs on port 8000. You can change it in the .env file.
 
-### License
+## License
 
 This project is licensed under the MIT License.
