@@ -83,7 +83,7 @@ router.get("/", protect, admin, getAllAnalytics);
  * @swagger
  * tags:
  *   - name: Analytics
- * /api/analytics/get-url-analytics/{urlId}:
+ * /api/analytics/url-analytics/{urlId}:
  *   get:
  *     summary: Get analytics data for a specific URL.
  *     description: Retrieve analytics data for a specific URL. Requires authentication and admin privileges.
@@ -169,7 +169,7 @@ router.get("/url-analytics/:urlId", protect, admin, getUrlAnalytics);
  * @swagger
  * tags:
  *   - name: Analytics
- * /api/analytics/get-user-analytics/{userId}:
+ * /api/analytics/user-analytics/{userId}:
  *   get:
  *     summary: Get analytics data for a specific user.
  *     description: Retrieve analytics data for a specific user. Requires authentication and admin privileges.

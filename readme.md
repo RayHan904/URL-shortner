@@ -38,12 +38,11 @@ This is a URL shortener API developed using PostgreSQL, Node.js, and Express.js.
   npm install
   ```
 
-
 - Run Server:
 
-```bash
-npm run dev
-```
+  ```bash
+  npm run dev
+  ```
 
 ## API Endpoints
 

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import constants from "./constants/index.js";
 import authRoutes from "./routes/auth.js";
 import analyticRoutes from "./routes/analytics.js";
@@ -69,29 +69,22 @@ swaggerDocs(app, 8000);
  * components:
  *   schemas:
  *     User:
- *       type: object
- *       properties:
- *         user_id:
- *           type: integer
- *           example: 1
- *           description: Unique identifier for the user.
- *         email:
- *           type: string
- *           example: user@example.com
- *           description: Email address of the user.
- *         password_hash:
- *           type: string
- *           example: hashed_password
- *           description: Hashed password of the user.
- *         created_at:
- *           type: string
- *           format: date-time
- *           example: '2022-01-01T00:00:00.000Z'
- *           description: Timestamp of user creation.
- *         is_admin:
- *           type: boolean
- *           example: false
- *           description: Indicates whether the user is an admin or not.
+*       schema:
+*         type: object
+*         properties:
+*           email:
+*             type: string
+*             format: email
+*           password:
+*             type: string
+*             minLength: 8
+*             maxLength: 20
+*         required:
+*           - email
+*           - password
+*       example:
+*         email: "johndoe@gmail.com"
+*         password: "12345667"
  *
  * @swagger
  * components:
@@ -165,7 +158,7 @@ swaggerDocs(app, 8000);
  *           example: 'Chrome'
  *           description: Type of browser used for the request.
  */
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to URL shortner API!");
 });
 app.use("/api/users", authRoutes);

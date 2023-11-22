@@ -67,7 +67,7 @@ router.get("/get-users", protect, admin, getUsers);
 
 /**
  * @swagger
- * /api/delete/{userId}:
+ * /api/users/delete/{userId}:
  *   delete:
  *     summary: Delete a user by ID.
  *     description: Delete a user by the provided user ID. Requires authentication and admin privileges.
@@ -100,7 +100,7 @@ router.get("/get-users", protect, admin, getUsers);
 router.delete("/delete/:userId", protect, admin, deleteUser);
 /**
  * @swagger
- * /api/register:
+ * /api/users/register:
  *   post:
  *     summary: Register a new user.
  *     description: Register a new user with the provided credentials.
@@ -133,7 +133,7 @@ router.delete("/delete/:userId", protect, admin, deleteUser);
 router.post("/register", registerValidation, validationMiddleware, register);
 /**
  * @swagger
- * /api/login:
+ * /api/users/login:
  *   post:
  *     summary: Login and obtain an authentication token.
  *     description: Login with valid credentials to obtain an authentication token.
@@ -166,7 +166,7 @@ router.post("/register", registerValidation, validationMiddleware, register);
 router.post("/login", loginValidation, validationMiddleware, login);
 /**
  * @swagger
- * /api/logout:
+ * /api/users/logout:
  *   get:
  *     summary: Logout the current user.
  *     description: Logout the currently authenticated user. Requires authentication.

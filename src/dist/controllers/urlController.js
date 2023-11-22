@@ -104,26 +104,18 @@ const redirect = asyncHandler(async (req, res) => {
       ) VALUES ($1, $2, $3, $4, $5, $6, $7);
       `, [user_id, url_id, deviceType, osType, country, city, browserType]);
         // Redirect to the original URL
-        res.redirect(original_url);
+        res
+            .status(302)
+            .json({
+            success: true,
+            message: "Redirected",
+        })
+            .redirect(original_url);
     }
     else {
         res.status(400);
         throw new Error("No such URL found.");
     }
 });
-const deleteLink = asyncHandler(async (req, res) => {
-    const urlId = req.params.urlId;
-    const { rowCount } = await pool.query(`DELETE FROM ${URLS_TABLE} WHERE url_id = $1;`, [urlId]);
-    if (rowCount === 0) {
-        return res.status(404).json({
-            status: "failed",
-            message: "No URL found for the specified URL ID.",
-        });
-    }
-    res.json({
-        status: "success",
-        message: "URL deleted successfully.",
-    });
-});
-export { getAllLinks, getLink, getUserLinks, shrink, redirect, deleteLink };
+export { getAllLinks, getLink, getUserLinks, shrink, redirect };
 //# sourceMappingURL=urlController.js.map

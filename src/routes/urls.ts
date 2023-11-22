@@ -11,7 +11,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/get-all-links:
+ * /api/url/get-all-links:
  *   get:
  *     summary: Get all shortened URLs.
  *     description: Retrieve a list of all shortened URLs. Requires authentication and admin privileges.
@@ -61,7 +61,7 @@ router.get("/get-all-links", protect, admin, getAllLinks);
 
 /**
  * @swagger
- * /api/get-link/{urlId}:
+ * /api/url/get-link/{urlId}:
  *   get:
  *     summary: Get a specific shortened URL by ID.
  *     description: Retrieve details of a specific shortened URL by its ID. Requires authentication and admin privileges.
@@ -112,7 +112,7 @@ router.get("/get-link/:urlId", protect, admin, getLink);
 
 /**
  * @swagger
- * /api/get-user-links/{userId}:
+ * /api/url/get-user-links/{userId}:
  *   get:
  *     summary: Get all URLs associated with a specific user.
  *     description: Retrieve a list of shortened URLs associated with a specific user. Requires authentication and admin privileges.
@@ -169,7 +169,7 @@ router.get("/get-user-links/:userId", protect, admin, getUserLinks);
 
 /**
  * @swagger
- * /api/shrink-url:
+ * /api/url/shrink-url:
  *   post:
  *     summary: Shrink a URL.
  *     description: Create a new shortened URL. Requires authentication.
@@ -214,7 +214,7 @@ router.post("/shrink-url", protect, shrink);
 
 /**
  * @swagger
- * /api/redirect/{shortUrl}:
+ * /api/url/redirect/{shortUrl}:
  *   get:
  *     summary: Redirect to the original URL.
  *     description: Redirect to the original URL associated with the given short URL key.
@@ -230,6 +230,11 @@ router.post("/shrink-url", protect, shrink);
  *     responses:
  *       '302':
  *         description: Redirects to the original URL.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               message: Redirected
  *       '404':
  *         $ref: '#/components/responses/NotFoundError'
  *       '500':
@@ -237,50 +242,5 @@ router.post("/shrink-url", protect, shrink);
  */
 
 router.get("/redirect/:shortUrl", redirect);
-
-/**
- * @swagger
- * /api/delete/{urlId}:
- *   get:
- *     summary: Delete a shortened URL.
- *     description: Delete a shortened URL and associated analytics. Requires authentication.
- *     security:
- *       - bearerAuth: []
- *     tags:
- *       - URL Shortener
- *     parameters:
- *       - in: path
- *         name: urlId
- *         required: true
- *         description: ID of the shortened URL to delete.
- *         schema:
- *           type: integer
- *     responses:
- *       '200':
- *         description: URL deleted successfully.
- *         content:
- *           application/json:
- *             example:
- *               success: true
- *               message: URL deleted successfully
- *       '204':
- *         description: Successful operation. But the database has no records.
- *         content:
- *           application/json:
- *             example:
- *               success: true
- *               message: No URLs  found in the Database
- *               urlData: []
- *       '401':
- *         $ref: '#/components/responses/UnauthorizedError'
- *       '403':
- *         $ref: '#/components/responses/ForbiddenError'
- *       '404':
- *         $ref: '#/components/responses/NotFoundError'
- *       '500':
- *         $ref: '#/components/responses/ServerError'
- */
-
-router.get("/delete/:urlId", redirect);
 
 export default router;
