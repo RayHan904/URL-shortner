@@ -31,4 +31,3 @@ CREATE TABLE analytics (
     browser_type VARCHAR(50)
 );
 
-

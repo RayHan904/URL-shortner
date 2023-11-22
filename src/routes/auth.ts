@@ -21,7 +21,7 @@ const router = express.Router();
  *     summary: Get all users.
  *     description: Retrieve a list of all users. Requires authentication and admin privileges.
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     tags:
  *       - Users
  *     responses:
@@ -72,7 +72,7 @@ router.get("/get-users", protect, admin, getUsers);
  *     summary: Delete a user by ID.
  *     description: Delete a user by the provided user ID. Requires authentication and admin privileges.
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     tags:
  *       - Users
  *     parameters:

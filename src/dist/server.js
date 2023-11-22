@@ -157,6 +157,9 @@ swaggerDocs(app, 8000);
  *           example: 'Chrome'
  *           description: Type of browser used for the request.
  */
+app.get("/", (req, res) => {
+    res.send("Welcome to URL shortner API!");
+});
 app.use("/api/users", authRoutes);
 app.use("/api/analytics", analyticRoutes);
 app.use("/api/url", urlRoutes);

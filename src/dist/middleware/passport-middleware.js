@@ -3,22 +3,33 @@ import { Strategy } from "passport-jwt";
 import { pool } from "../db/index.js";
 import config from "../constants/index.js";
 const { SECRET } = config;
-const cookieExtractor = (req) => {
+// const cookieExtractor = (req) =>{
+//     let token = null;
+//     // Extract the token from the Authorization header
+//     if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+//       token = req.headers.authorization.split(" ")[1];
+//     }
+//     return token;
+//   };
+const bearerAuthExtractor = (req) => {
     let token = null;
-    if (req && req.cookies)
-        token = req.cookies["token"];
+    // Extract the token from the Authorization header
+    if (req.headers.authorization &&
+        req.headers.authorization.split(" ")[0] === "Bearer") {
+        token = req.headers.authorization.split(" ")[1];
+    }
     return token;
 };
 const opts = {
     secretOrKey: SECRET,
-    jwtFromRequest: cookieExtractor,
+    jwtFromRequest: bearerAuthExtractor,
 };
 passport.use(new Strategy(opts, async ({ id }, done) => {
     try {
         const { rows } = await pool.query("SELECT user_id, email, is_admin FROM users WHERE user_id = $1", [id]);
         if (!rows.length) {
             // If user is not found, send an "Unauthorized" error
-            return done(null, false, { message: "Unauthosdfsrized" });
+            return done(null, false, { message: "" });
         }
         let user = {
             user_id: rows[0].user_id,
@@ -30,7 +41,7 @@ passport.use(new Strategy(opts, async ({ id }, done) => {
     }
     catch (error) {
         // If an unexpected error occurs, return a 500 status
-        return done(null, false, { message: "Internal sdfsServer Error" });
+        return done(null, false, { message: "Internal Server Error" });
     }
 }));
 //# sourceMappingURL=passport-middleware.js.map

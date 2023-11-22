@@ -10,17 +10,20 @@ const options = {
         },
         components: {
             securitySchemes: {
-                cookieAuth: {
-                    type: "apiKey",
+                bearerAuth: {
+                    type: "http",
                     in: "cookie",
-                    name: "token",
+                    scheme: "bearer",
                 },
             },
         },
-        security: [{ cookieAuth: [] }],
+        security: [{ bearerAuth: [] }],
         servers: [
             {
                 url: "http://localhost:8000",
+            },
+            {
+                url: "https://url-shortner-api-7cp2.onrender.com/",
             },
         ],
     },

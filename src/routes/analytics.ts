@@ -14,17 +14,17 @@ const router = express.Router();
  *   - name: Analytics
  *     description: Endpoints for retrieving analytics data
  * securityDefinitions:
- *   cookieAuth:
+ *   bearerAuth:
  *     type: apiKey
  *     in: cookie
  *     name: your_auth_cookie_name
  *
- * /api/analytics/get-all-analytics:
+ * /api/analytics:
  *   get:
  *     summary: Get all analytics data.
  *     description: Retrieve a list of all analytics data. Requires authentication and admin privileges.
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     tags:
  *       - Analytics
  *     responses:
@@ -70,6 +70,8 @@ const router = express.Router();
  *               analytics: []
  *       '401':
  *         $ref: '#/components/responses/UnauthorizedError'
+ *       '404':
+ *         $ref: '#/components/responses/NotFoundError'
  *       '403':
  *         $ref: '#/components/responses/ForbiddenError'
  *       '500':
@@ -92,7 +94,7 @@ router.get("/", protect, admin, getAllAnalytics);
  *         description: ID of the URL to fetch analytics data for.
  *         required: true
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     tags:
  *       - Analytics
  *     responses:
@@ -178,7 +180,7 @@ router.get("/url-analytics/:urlId", protect, admin, getUrlAnalytics);
  *         description: ID of the user to fetch analytics data for.
  *         required: true
  *     security:
- *       - cookieAuth: []
+ *       - bearerAuth: []
  *     tags:
  *       - Analytics
  *     responses:

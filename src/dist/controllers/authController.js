@@ -64,8 +64,19 @@ const login = asyncHandler(async (req, res) => {
         email: user?.email,
     };
     const token = await sign(payload, SECRET);
+    //Commenting out cookie based authentication
+    // if (token) {
+    //   res.status(201).cookie("token", token, { httpOnly: true }).json({
+    //     success: true,
+    //     message: "Logged in successfully",
+    //   });
+    // } else {
+    //   res.status(500);
+    //   throw new Error("Failed to login.");
+    // }
     if (token) {
-        res.status(201).cookie("token", token, { httpOnly: true }).json({
+        // Send the token in the response headers instead of setting it as a cookie
+        res.status(201).header("Authorization", `Bearer ${token}`).json({
             success: true,
             message: "Logged in successfully",
         });
@@ -76,7 +87,7 @@ const login = asyncHandler(async (req, res) => {
     }
 });
 const logout = asyncHandler(async (req, res) => {
-    res.status(201).clearCookie("token", { httpOnly: true }).json({
+    res.status(201).header("Authorization", ``).json({
         success: true,
         message: "Logged out successfully",
     });

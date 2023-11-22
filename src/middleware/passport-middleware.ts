@@ -5,15 +5,29 @@ import config from "../constants/index.js";
 
 const { SECRET } = config;
 
-const cookieExtractor = (req) => {
+// const cookieExtractor = (req) =>{
+//     let token = null;
+//     // Extract the token from the Authorization header
+//     if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
+//       token = req.headers.authorization.split(" ")[1];
+//     }
+//     return token;
+//   };
+const bearerAuthExtractor = (req) => {
   let token = null;
-  if (req && req.cookies) token = req.cookies["token"];
+  // Extract the token from the Authorization header
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.split(" ")[0] === "Bearer"
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
   return token;
 };
 
 const opts = {
   secretOrKey: SECRET,
-  jwtFromRequest: cookieExtractor,
+  jwtFromRequest: bearerAuthExtractor,
 };
 
 passport.use(
@@ -26,7 +40,7 @@ passport.use(
 
       if (!rows.length) {
         // If user is not found, send an "Unauthorized" error
-        return done(null, false, { message: "Unauthosdfsrized" });
+        return done(null, false, { message: "" });
       }
 
       let user = {
@@ -39,7 +53,7 @@ passport.use(
       return done(null, user);
     } catch (error) {
       // If an unexpected error occurs, return a 500 status
-      return done(null, false, { message: "Internal sdfsServer Error" });
+      return done(null, false, { message: "Internal Server Error" });
     }
   }),
 );
